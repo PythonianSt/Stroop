@@ -117,7 +117,7 @@ def make_qr_png(data):
 
 
 def reset_test():
-    st.session_state.items = make_incongruent_items(st.session_state.n_items)
+    st.session_state.stroop_items = make_incongruent_items(st.session_state.n_items)
     st.session_state.answers = {}
     st.session_state.start_time = time.time()
     st.session_state.finished = False
@@ -131,8 +131,12 @@ tab_test, tab_qr, tab_admin = st.tabs(["ทดสอบ", "สร้าง QR", 
 with tab_test:
     st.subheader("ข้อมูลผู้ทำแบบทดสอบ")
 
+    query_params = st.query_params
+    default_student_id = query_params.get("student_id", "")
+
     student_id = st.text_input(
         "Student ID / รหัสนักศึกษา",
+        value=default_student_id,
         placeholder="เช่น 6612345678",
     )
 
@@ -144,8 +148,8 @@ with tab_test:
 
     st.session_state.n_items = st.selectbox("จำนวนข้อ", [10, 20, 30, 40], index=1)
 
-    if "items" not in st.session_state:
-        st.session_state.items = make_incongruent_items(st.session_state.n_items)
+    if "stroop_items" not in st.session_state:
+        st.session_state.stroop_items = make_incongruent_items(st.session_state.n_items)
         st.session_state.answers = {}
         st.session_state.start_time = None
         st.session_state.finished = False
@@ -174,7 +178,7 @@ with tab_test:
         st.subheader("คำสั่ง")
         st.write("ดูคำที่ปรากฏ แล้วเลือก **สีของตัวอักษร** ให้ถูกต้อง")
 
-        for item in st.session_state.items:
+        for item in st.session_state.stroop_items:
             st.markdown(
                 f"""
                 <div style="font-size:42px; font-weight:700; color:{item['hex']};
@@ -192,14 +196,16 @@ with tab_test:
                 horizontal=True,
                 index=None,
             )
+
             st.session_state.answers[item["no"]] = ans
 
         answered = sum(1 for v in st.session_state.answers.values() if v is not None)
+        total_items = len(st.session_state.stroop_items)
 
-        st.write(f"ตอบแล้ว {answered}/{len(st.session_state.items)} ข้อ")
+        st.write(f"ตอบแล้ว {answered}/{total_items} ข้อ")
 
         if st.button("ส่งคำตอบ", type="primary"):
-            if answered < len(st.session_state.items):
+            if answered < total_items:
                 st.warning("กรุณาตอบให้ครบทุกข้อ")
             else:
                 end_time = time.time()
@@ -208,16 +214,17 @@ with tab_test:
                 correct = 0
                 wrong_items = []
 
-                for item in st.session_state.items:
+                for item in st.session_state.stroop_items:
                     ans = st.session_state.answers.get(item["no"])
                     is_correct = ans == item["ink"]
                     correct += int(is_correct)
+
                     if not is_correct:
                         wrong_items.append(
                             f"{item['no']}:{item['word']}/{item['ink']}/ตอบ{ans}"
                         )
 
-                total = len(st.session_state.items)
+                total = len(st.session_state.stroop_items)
                 errors = total - correct
                 accuracy = round(correct / total * 100, 2)
                 correct_per_min = round(correct / duration_sec * 60, 2) if duration_sec > 0 else None
@@ -264,7 +271,9 @@ with tab_qr:
     if base_url and qr_student_id:
         qr_url = f"{base_url}?student_id={qr_student_id}"
         img_bytes = make_qr_png(qr_url)
+
         st.image(img_bytes, caption=qr_url, width=220)
+
         st.download_button(
             "ดาวน์โหลด QR PNG",
             img_bytes,
@@ -284,6 +293,7 @@ with tab_admin:
 
             if not df.empty:
                 st.dataframe(df, use_container_width=True)
+
                 st.download_button(
                     "ดาวน์โหลด CSV",
                     df.to_csv(index=False, encoding="utf-8-sig"),
@@ -292,7 +302,9 @@ with tab_admin:
                 )
             else:
                 st.info("ยังไม่มีข้อมูล")
+
         except Exception as e:
             st.error(f"โหลดข้อมูลไม่สำเร็จ: {e}")
+
     elif code:
         st.error("รหัสไม่ถูกต้อง")
