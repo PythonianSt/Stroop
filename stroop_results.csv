@@ -14,3 +14,4 @@ timestamp_bkk,student_id,age,gender,test_type,n_items,correct,errors,accuracy_pe
 2026-07-09 14:27:33,6921701077,18,ชาย,incongruent_stroop,10,10,0,100.0,31.88,18.82,
 2026-07-10 11:45:41,6921701204,19,หญิง,incongruent_stroop,10,10,0,100.0,24.47,24.52,
 2026-07-10 12:50:10,6921701191,18,ชาย,incongruent_stroop,10,9,1,90.0,50.38,10.72,7:เขียว/ส้ม/ตอบเหลือง
+2026-07-10 13:53:29,6921701069,18,หญิง,incongruent_stroop,10,10,0,100.0,30.11,19.93,
