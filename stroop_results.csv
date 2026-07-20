@@ -59,3 +59,4 @@ timestamp_bkk,student_id,age,gender,test_type,n_items,correct,errors,accuracy_pe
 2026-07-20 15:33:23,21/08/2559,18,ชาย,incongruent_stroop,10,10,0,100.0,23.27,25.78,
 2026-07-20 15:33:25,21/08/2559,18,ชาย,incongruent_stroop,10,10,0,100.0,24.58,24.41,
 2026-07-20 15:33:26,21/08/2559,18,ชาย,incongruent_stroop,10,10,0,100.0,25.76,23.29,
+2026-07-20 15:33:27,21/08/2559,18,ชาย,incongruent_stroop,10,10,0,100.0,27.17,22.08,
