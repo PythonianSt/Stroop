@@ -96,3 +96,4 @@ timestamp_bkk,student_id,age,gender,test_type,n_items,correct,errors,accuracy_pe
 2026-09-24 13:40:23,6920102226,18,หญิง,incongruent_stroop,10,10,0,100.0,47.7,12.58,
 2026-09-24 13:51:54,6920105039,19,หญิง,incongruent_stroop,10,10,0,100.0,35.22,17.04,
 2026-09-24 14:01:16,6920105101,18,หญิง,incongruent_stroop,10,10,0,100.0,26.92,22.29,
+2026-09-24 14:01:18,6920105101,18,หญิง,incongruent_stroop,10,10,0,100.0,29.14,20.59,
